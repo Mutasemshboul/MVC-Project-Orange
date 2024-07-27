@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVC_Project_Orange.Models;
 using System.Diagnostics;
@@ -17,7 +18,7 @@ namespace MVC_Project_Orange.Controllers
         {
             return View();
         }
-
+        [Authorize(Roles =SD.Role_Admin)]
         public IActionResult Privacy()
         {
             return View();
