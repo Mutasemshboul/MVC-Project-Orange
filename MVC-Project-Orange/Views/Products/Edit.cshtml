@@ -1,7 +1,7 @@
 ﻿@model MVC_Project_Orange.Models.Product
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -12,16 +12,16 @@
     <div class="col-lg-6 ">
         <div class="card">
             <div class="card-header">
-                <strong class="card-title">Create Product</strong>
+                <strong class="card-title">Edit Product</strong>
             </div>
             <div class="card-body">
-                <!-- Credit Card -->
+                <!-- Edit Card -->
                 <div id="pay-invoice">
                     <div class="card-body">
                     
                         <form asp-action="Edit">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+                            <input type="hidden" asp-for="ProductID" />
                             <div class="form-group">
                                 <label asp-for="Name" class="control-label"></label>
                                 <input asp-for="Name" class="form-control" />
