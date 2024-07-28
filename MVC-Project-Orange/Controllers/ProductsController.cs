@@ -65,7 +65,7 @@ namespace MVC_Project_Orange.Controllers
             {
                 _context.Add(product);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("ManageProducts","Admin");
             }
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "Name", product.CategoryID);
             return View(product);
