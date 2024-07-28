@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
 }
 
 <h1>Delete</h1>
@@ -79,9 +81,9 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+    <form  asp-action="Delete">
         <input type="hidden" asp-for="ProductID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-controller="Admin" asp-action="ManageProducts">Back to List</a>
     </form>
 </div>

@@ -118,7 +118,7 @@ namespace MVC_Project_Orange.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("ManageProducts", "Admin");
             }
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "Name", product.CategoryID);
             return View(product);
@@ -155,7 +155,7 @@ namespace MVC_Project_Orange.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("ManageProducts", "Admin");
         }
 
         private bool ProductExists(int id)
