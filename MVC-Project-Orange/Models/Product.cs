@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace MVC_Project_Orange.Models
 {
@@ -24,6 +25,7 @@ namespace MVC_Project_Orange.Models
         public int CategoryID { get; set; }
 
         [ForeignKey("CategoryID")]
+        [ValidateNever]
         public Category Category { get; set; }
 
         public decimal Sale { get; set; }
