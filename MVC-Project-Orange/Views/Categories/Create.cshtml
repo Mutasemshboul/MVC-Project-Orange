@@ -1,52 +1,100 @@
 ﻿@model MVC_Project_Orange.Models.Category
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="d-flex justify-content-center">
+
+    <div class="col-lg-6 ">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Create Product</strong>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+            <div class="card-body">
+                <!-- Edit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group has-success">
+                                <label asp-for="Description" class="control-label"></label>
+                                <input asp-for="Description" class="form-control" />
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                            @* <div class="form-group">
+                            <label asp-for="Price" class="control-label"></label>
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                            <label asp-for="Stock" class="control-label"></label>
+                            <input asp-for="Stock" class="form-control" />
+                            <span asp-validation-for="Stock" class="text-danger"></span>
+                            </div> *@
+                            <div class="form-group" hidden>
+                                <label asp-for="ImgURL" class="control-label"></label>
+                                <input asp-for="ImgURL" class="form-control" />
+                                <span asp-validation-for="ImgURL" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ImageFile" class="control-label"></label>
+                                <input asp-for="ImageFile" class="form-control" />
+                                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CategoryID" class="control-label"></label>
+                                <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
+                            </div>
+                            @*  <div class="form-group">
+                            <label asp-for="Sale" class="control-label"></label>
+                            <input asp-for="Sale" class="form-control" />
+                            <span asp-validation-for="Sale" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                            <label asp-for="Discount" class="control-label"></label>
+                            <input asp-for="Discount" class="form-control" />
+                            <span asp-validation-for="Discount" class="text-danger"></span>
+                            </div> *@
+                            @*  <div class="form-group form-check">
+                            <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                            </label>
+                            </div>
+                            <div class="form-group">
+                            <label asp-for="CreatedAt" class="control-label"></label>
+                            <input asp-for="CreatedAt" class="form-control" />
+                            <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                            <label asp-for="UpdatedAt" class="control-label"></label>
+                            <input asp-for="UpdatedAt" class="form-control" />
+                            <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+                            </div> *@
+                            <div>
+                                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                    <i class="fa fa-lock fa-lg"></i>&nbsp;
+                                    <span id="payment-button-amount">Create</span>
+                                    <span id="payment-button-sending" style="display:none;">Sending…</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="ImgURL" class="control-label"></label>
-                <input asp-for="ImgURL" class="form-control" />
-                <span asp-validation-for="ImgURL" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+        </div> <!-- .card -->
+
+    </div><!--/.col-->
 
 </div>
 
