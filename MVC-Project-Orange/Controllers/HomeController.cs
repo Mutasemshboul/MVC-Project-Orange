@@ -27,9 +27,10 @@ namespace MVC_Project_Orange.Controllers
             var applicationDbContext = _context.Products.Include(p => p.Category);
             return View(await applicationDbContext.ToListAsync());
         }
-        public IActionResult Shop()
+        public async Task<IActionResult> ShopAsync()
         {
-            return View();
+            var applicationDbContext = _context.Products.Include(p => p.Category);
+            return View(await applicationDbContext.ToListAsync());
         }
         [Authorize(Roles =SD.Role_Admin)]
         public IActionResult Privacy()
