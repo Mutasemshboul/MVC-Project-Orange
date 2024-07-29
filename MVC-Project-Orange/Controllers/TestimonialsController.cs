@@ -160,5 +160,25 @@ namespace MVC_Project_Orange.Controllers
         {
             return _context.Testimonials.Any(e => e.TestimonialId == id);
         }
+
+        public async Task<IActionResult> Accept(int? id)
+        {
+            var testimonial = await _context.Testimonials.FindAsync(id);
+            testimonial.Status = "Accept";
+            _context.Update(testimonial);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+
+        }
+
+        public async Task<IActionResult> Reject(int? id)
+        {
+            var testimonial = await _context.Testimonials.FindAsync(id);
+            testimonial.Status = "Reject";
+            _context.Update(testimonial);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+
+        }
     }
 }

@@ -177,7 +177,8 @@ namespace MVC_Project_Orange.Controllers
             var category = await _context.Categories.FindAsync(id);
             if (category != null)
             {
-                _context.Categories.Remove(category);
+                category.IsDeleted = true;
+                _context.Categories.Update(category);
             }
 
             await _context.SaveChangesAsync();

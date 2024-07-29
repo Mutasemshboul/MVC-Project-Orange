@@ -43,25 +43,5 @@ namespace MVC_Project_Orange.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult About_Us()
-        {
-            return View();
-        }
-        public IActionResult Shop_Detailes()
-        {
-            return View();
-        }
-        public IActionResult Shoping_Cart()
-        {
-            return View();
-        }
-        public IActionResult Check_Out()
-        {
-            return View();
-        }
-        public IActionResult Contacts()
-        {
-            return View();
-        }
     }
 }
