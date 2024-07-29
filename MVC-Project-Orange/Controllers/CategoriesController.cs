@@ -15,10 +15,11 @@ namespace MVC_Project_Orange.Controllers
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CategoriesController(ApplicationDbContext context)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public CategoriesController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Categories
@@ -56,10 +57,26 @@ namespace MVC_Project_Orange.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryID,Name,Description,ImgURL,IsDeleted,CreatedAt,UpdatedAt")] Category category)
+        public async Task<IActionResult> Create([Bind("CategoryID,Name,Description,ImgURL,IsDeleted,CreatedAt,UpdatedAt,ImageFile")] Category category)
         {
             if (ModelState.IsValid)
             {
+                if (category.ImageFile != null)
+                {
+                    string wwwRootPath = webHostEnvironment.WebRootPath;
+
+                    string fileName = Guid.NewGuid().ToString() + category.ImageFile.FileName;
+
+                    string path = Path.Combine(wwwRootPath + "/Images/" + fileName);
+
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await category.ImageFile.CopyToAsync(fileStream);
+                    }
+
+                    category.ImgURL = fileName;
+                }
+
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,7 +105,7 @@ namespace MVC_Project_Orange.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoryID,Name,Description,ImgURL,IsDeleted,CreatedAt,UpdatedAt")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("CategoryID,Name,Description,ImgURL,IsDeleted,CreatedAt,UpdatedAt,ImageFile")] Category category)
         {
             if (id != category.CategoryID)
             {
@@ -99,6 +116,22 @@ namespace MVC_Project_Orange.Controllers
             {
                 try
                 {
+                    if (category.ImageFile != null)
+                    {
+                        string wwwRootPath = webHostEnvironment.WebRootPath;
+
+                        string fileName = Guid.NewGuid().ToString() + category.ImageFile.FileName;
+
+                        string path = Path.Combine(wwwRootPath + "/Images/" + fileName);
+
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await category.ImageFile.CopyToAsync(fileStream);
+                        }
+
+                        category.ImgURL = fileName;
+                    }
+
                     _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
