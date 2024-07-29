@@ -21,7 +21,8 @@ namespace MVC_Project_Orange.Models
         public int Stock { get; set; }
 
         public string ImgURL { get; set; }
-
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; }
         public int CategoryID { get; set; }
 
         [ForeignKey("CategoryID")]

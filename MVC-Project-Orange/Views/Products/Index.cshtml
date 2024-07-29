@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h1>Index</h1>
@@ -64,7 +65,8 @@
                 @Html.DisplayFor(modelItem => item.Stock)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImgURL)
+                @* @Html.DisplayFor(modelItem => item.ImgURL) *@
+                    <img src="@Url.Content("~/Images/" + item.ImgURL )" asp-append-version="true" width="100" height="100" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVC_Project_Orange.Models
 {
@@ -13,6 +14,8 @@ namespace MVC_Project_Orange.Models
         public string Description { get; set; }
 
         public string ImgURL { get; set; }
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; }
 
         public bool IsDeleted { get; set; } = false;
 
