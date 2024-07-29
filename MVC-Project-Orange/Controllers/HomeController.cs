@@ -18,6 +18,10 @@ namespace MVC_Project_Orange.Controllers
         {
             return View();
         }
+        public IActionResult Shop()
+        {
+            return View();
+        }
         [Authorize(Roles =SD.Role_Admin)]
         public IActionResult Privacy()
         {
