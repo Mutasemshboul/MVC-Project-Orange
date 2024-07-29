@@ -62,8 +62,7 @@ namespace MVC_Project_Orange.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductID,Name,Description,Price,Stock,ImgURL,CategoryID,Sale,Discount,IsDeleted,CreatedAt,UpdatedAt,ImageFile")] Product product)
         {
-            if (ModelState.IsValid)
-            {
+            
                 if (product.ImageFile != null)
                 {
                     string wwwRootPath = webHostEnvironment.WebRootPath;
@@ -83,9 +82,10 @@ namespace MVC_Project_Orange.Controllers
 
                 _context.Add(product);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("ManageProducts","Admin");
-            }
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "Name", product.CategoryID);
+
+            return RedirectToAction("ManageProducts","Admin");
+            
             return View(product);
         }
 
