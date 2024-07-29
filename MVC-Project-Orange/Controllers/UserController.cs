@@ -156,17 +156,18 @@ namespace MVC_Project_Orange.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _context.ApplicationUsers.FindAsync(id);
             if (user != null)
             {
-                var result = await _userManager.DeleteAsync(user);
+                user.isDeleted = true;   
+                var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction(nameof(Index)); // Redirect to the listing page after deletion
+                    return RedirectToAction(nameof(Index));
                 }
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description); // Handle any errors during the deletion process
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 

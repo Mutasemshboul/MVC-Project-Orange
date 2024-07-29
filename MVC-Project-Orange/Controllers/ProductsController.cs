@@ -168,7 +168,9 @@ namespace MVC_Project_Orange.Controllers
 
             var product = await _context.Products
                 .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.ProductID == id);
+                .Where(p => !p.IsDeleted && p.ProductID == id) // Ensure soft-deleted items are not accessible
+                .FirstOrDefaultAsync();
+
             if (product == null)
             {
                 return NotFound();
@@ -185,10 +187,11 @@ namespace MVC_Project_Orange.Controllers
             var product = await _context.Products.FindAsync(id);
             if (product != null)
             {
-                _context.Products.Remove(product);
+                product.IsDeleted = true; 
+                _context.Update(product);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction("ManageProducts", "Admin");
         }
 

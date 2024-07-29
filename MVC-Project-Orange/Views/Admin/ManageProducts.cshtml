@@ -6,7 +6,15 @@
 
 
 
+<style>
+    .text-green {
+        color: green;
+    }
 
+    .text-red {
+        color: red;
+    }
+</style>
 
 
 
@@ -89,8 +97,8 @@
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Discount)
                                         </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.IsDeleted)
+                                        <td class="@(item.IsDeleted ? "text-red" : "text-green")">
+                                            @(item.IsDeleted ? "Yes" : "No")
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.CreatedAt)
