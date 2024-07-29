@@ -27,7 +27,7 @@ namespace MVC_Project_Orange.Models
 
         [ForeignKey("CategoryID")]
         [ValidateNever]
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
         public decimal Sale { get; set; }
 
