@@ -15,10 +15,11 @@ namespace MVC_Project_Orange.Controllers
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public ProductsController(ApplicationDbContext context)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public ProductsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Products
@@ -59,15 +60,32 @@ namespace MVC_Project_Orange.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductID,Name,Description,Price,Stock,ImgURL,CategoryID,Sale,Discount,IsDeleted,CreatedAt,UpdatedAt")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductID,Name,Description,Price,Stock,ImgURL,CategoryID,Sale,Discount,IsDeleted,CreatedAt,UpdatedAt,ImageFile")] Product product)
         {
-            if (ModelState.IsValid)
-            {
+            
+                if (product.ImageFile != null)
+                {
+                    string wwwRootPath = webHostEnvironment.WebRootPath;
+
+                    string fileName = Guid.NewGuid().ToString() + product.ImageFile.FileName;
+
+                    string path = Path.Combine(wwwRootPath + "/Images/" + fileName);
+
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await product.ImageFile.CopyToAsync(fileStream);
+                    }
+
+                    product.ImgURL = fileName;
+                }
+
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("ManageProducts","Admin");
-            }
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "Name", product.CategoryID);
+
+            return RedirectToAction("ManageProducts","Admin");
+            
             return View(product);
         }
 
@@ -93,7 +111,7 @@ namespace MVC_Project_Orange.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductID,Name,Description,Price,Stock,ImgURL,CategoryID,Sale,Discount,IsDeleted,CreatedAt,UpdatedAt")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductID,Name,Description,Price,Stock,ImgURL,CategoryID,Sale,Discount,IsDeleted,CreatedAt,UpdatedAt,ImageFile")] Product product)
         {
             if (id != product.ProductID)
             {
@@ -104,6 +122,22 @@ namespace MVC_Project_Orange.Controllers
             {
                 try
                 {
+                    if (product.ImageFile != null)
+                    {
+                        string wwwRootPath = webHostEnvironment.WebRootPath;
+
+                        string fileName = Guid.NewGuid().ToString() + product.ImageFile.FileName;
+
+                        string path = Path.Combine(wwwRootPath + "/Images/" + fileName);
+
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await product.ImageFile.CopyToAsync(fileStream);
+                        }
+
+                        product.ImgURL = fileName;
+                    }
+
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace MVC_Project_Orange.Models
 {
@@ -10,7 +11,8 @@ namespace MVC_Project_Orange.Models
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
-        public ApplicationUser User { get; set; }
+        
+        public ApplicationUser? User { get; set; }
 
         public string Message { get; set; }
 
