@@ -83,19 +83,33 @@
             <div class="col-lg-4">
                 <div class="cart__discount">
                     <h6>Discount codes</h6>
-                    <form action="#">
-                        <input type="text" placeholder="Coupon code">
+                    <form action="@Url.Action("ApplyCoupon", "Cart")" method="post">
+                        <input type="text" name="couponCode" placeholder="Coupon code">
                         <button type="submit">Apply</button>
                     </form>
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <p style="color: red;">@TempData["ErrorMessage"]</p>
+                    }
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <p style="color: green;">@TempData["SuccessMessage"]</p>
+                    }
                 </div>
+
                 <div class="cart__total">
                     <h6>Cart total</h6>
                     <ul>
-                        <li>Total <span id="totalofsum">$ @ViewBag.Total.ToString("0.00")</span></li>
+
+                            <li>Total <span>$@((ViewBag.Total).ToString("0.00"))</span></li>
+
+                        
+
                     </ul>
                     <a href="#" class="primary-btn">Proceed to checkout</a>
                 </div>
             </div>
+
         </div>
     </div>
 </section>

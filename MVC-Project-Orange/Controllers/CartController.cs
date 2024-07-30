@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MVC_Project_Orange.Data;
 using MVC_Project_Orange.Models;
 using Newtonsoft.Json;
@@ -9,6 +10,7 @@ namespace MVC_Project_Orange.Controllers
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
+        public static decimal Total { get; set; }
 
         public CartController(ApplicationDbContext context)
         {
@@ -18,8 +20,16 @@ namespace MVC_Project_Orange.Controllers
         {
             var cart = GetCart();
             decimal subtotal = cart.Sum(item => item.Price * item.Quantity);
-           
-            ViewBag.Total = subtotal;
+
+
+            if (TempData["Total"] != null)
+            {
+                ViewBag.Total = Convert.ToDecimal(TempData["Total"]);
+            }
+            else
+            {
+                ViewBag.Total = subtotal;
+            }
             return View(cart);
         }
         [Authorize(Roles = SD.Role_Customer)]
@@ -71,6 +81,38 @@ namespace MVC_Project_Orange.Controllers
                 SaveCart(cart);
             }
             return RedirectToAction("Index");  
+        }
+
+        public async Task<Coupon> ValidateCoupon(string code)
+        {
+            var coupon = await _context.Coupons
+                                       .Where(c => c.Code == code && c.Status == "Active" && c.ExpiryDate >= DateTime.UtcNow)
+                                       .FirstOrDefaultAsync();
+            return coupon;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApplyCoupon(string couponCode)
+        {
+            var coupon = await ValidateCoupon(couponCode);
+            if (coupon == null)
+            {
+                TempData["ErrorMessage"] = "Invalid or expired coupon.";
+                return RedirectToAction("Index");
+            }
+
+            var cart = GetCart();
+            decimal subtotal = cart.Sum(item => item.Price * item.Quantity);
+            decimal discount = subtotal * 0.20m;  
+            decimal total = subtotal - discount;
+
+            TempData["Total"] = total.ToString();
+
+
+
+
+            TempData["SuccessMessage"] = $"Coupon applied! 20% discount has been applied.";
+            return RedirectToAction("Index");
         }
 
     }
