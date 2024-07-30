@@ -126,7 +126,7 @@
                     </div>
                     <div class="product__item__text">
                             <h6>@Html.DisplayFor(modelItem => item.Category.Name)</h6>
-                        <a href="#" class="add-cart">+ Add To Cart</a>
+                            <a href="@Url.Action("AddToCart", "Cart", new { productId = item.ProductID })" class="add-cart">+ Add To Cart</a>
                             <h5>@Html.DisplayFor(modelItem => item.Price)</h5>
                     </div>
                 </div>
