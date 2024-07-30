@@ -239,11 +239,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="hero__slider owl-carousel">
+            <div class="hero__slider owl-carousel" id="owl-carousel">
                 @foreach (var testimonial in testimonials)
                 {
                     <div class="col-lg-4 col-md-6 col-sm-6 ">
-                        <div class="blog__item">
+                        <div class="blog__item" id="blog__item">
                             <div class="blog__item__pic set-bg" data-setbg="../User_assets/img/blog/blog-1.jpg"></div>
                             <div class="blog__item__text">
                                 <h5>@testimonial.Message</h5>

@@ -28,7 +28,7 @@
 <section class="shop spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3">
+          @*   <div class="col-lg-3">
                 <div class="shop__sidebar">
                     <div class="shop__sidebar__search">
                         <form action="#">
@@ -198,7 +198,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> *@
             <div class="col-lg-9">
                 <div class="shop__product__option">
                     <div class="row">
@@ -237,13 +237,15 @@
                                     </div>
                                     <div class="product__item__text">
                                         <h6>@Html.DisplayFor(modelItem => item.Name)</h6>
-                                        <a href="#" class="add-cart">+ Add To Cart</a>
+                                    <a href="@Url.Action("Shop_Detailes", "Home", new { id = item.ProductID })">+ Show Details</a>
 
                                        
-                                        <a href="@Url.Action("Shop_Detailes", "Home", new { id = item.ProductID })" class="add-cart">+ Show Details</a>
+                                       
 
                                         <h5>@Html.DisplayFor(modelItem => item.Price)</h5>
+
                                         <div class="product__color__select">
+
                                             <label for="pc-4">
                                                 <input type="radio" id="pc-4">
                                             </label>
