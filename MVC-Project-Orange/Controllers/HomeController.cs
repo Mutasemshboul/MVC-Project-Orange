@@ -45,11 +45,34 @@ namespace MVC_Project_Orange.Controllers
         }
         public IActionResult About_Us()
         {
+            int categoryCount = _context.Categories.Count();
+            ViewBag.CategoryCount = categoryCount;
+
+            int Usercount = _context.Users.Count();
+            ViewBag.UserCout = Usercount;
+
+            int ProductCount =_context.Products.Count();
+            ViewBag.ProductCount = ProductCount;
+
             return View();
         }
-        public IActionResult Shop_Detailes()
+        public async Task<IActionResult> Shop_Detailes(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(m => m.ProductID == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+            // return View();
         }
         public IActionResult Shoping_Cart()
         {
@@ -63,7 +86,25 @@ namespace MVC_Project_Orange.Controllers
         {
             return View();
         }
-        
+
+/*        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(m => m.ProductID == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }*/
+
 
     }
 }
