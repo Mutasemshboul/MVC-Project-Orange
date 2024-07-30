@@ -72,7 +72,10 @@ namespace MVC_Project_Orange.Controllers
         {
             return View();
         }
-        
+        public IActionResult Testimonial()
+        {
+            return View();
+        }
 
     }
 }
