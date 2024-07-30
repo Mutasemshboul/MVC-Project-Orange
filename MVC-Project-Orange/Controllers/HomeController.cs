@@ -56,9 +56,23 @@ namespace MVC_Project_Orange.Controllers
 
             return View();
         }
-        public IActionResult Shop_Detailes()
+        public async Task<IActionResult> Shop_Detailes(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(m => m.ProductID == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+            // return View();
         }
         public IActionResult Shoping_Cart()
         {
@@ -72,7 +86,25 @@ namespace MVC_Project_Orange.Controllers
         {
             return View();
         }
-        
+
+/*        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(m => m.ProductID == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }*/
+
 
     }
 }
