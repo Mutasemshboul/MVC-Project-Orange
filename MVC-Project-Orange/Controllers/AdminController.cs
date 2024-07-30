@@ -17,6 +17,19 @@ namespace MVC_Project_Orange.Controllers
         }
         public IActionResult Index()
         {
+            int categoryCount = _context.Categories.Count();
+            ViewBag.CategoryCount = categoryCount;
+
+            int Usercount = _context.Users.Count();
+            ViewBag.UserCount = Usercount;
+
+            int ProductCount = _context.Products.Count();
+            ViewBag.ProductCount = ProductCount;
+
+            var totalTransactions = _context.Transactions
+                              .Include(t => t.Product)
+                              .Sum(t => t.Quantity * t.Product.Price);
+            ViewBag.TotalTransactions = totalTransactions;
             return View();
         }
         //Products

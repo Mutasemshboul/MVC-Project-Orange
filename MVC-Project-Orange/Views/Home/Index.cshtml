@@ -1,8 +1,25 @@
 ﻿@model IEnumerable<MVC_Project_Orange.Models.Product>
 @{
     ViewData["Title"] = "Home Page";
+    var testimonials = ViewBag.testimonials as List<Testimonial>;
+}
+<style>
+    .owl-carousel .owl-stage {
+    display: flex;
+    justify-content: center;
 }
 
+.owl-carousel .owl-item {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+.blog__item {
+    flex-basis: 100%;  /* Adjust this value based on your design needs */
+    max-width: 340px;  /* Or however wide you want each card to be */
+}
+</style>
 <!-- Hero Section Begin -->
 <section class="hero">
     <div class="hero__slider owl-carousel">
@@ -222,36 +239,23 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic set-bg" data-setbg="../User_assets/img/blog/blog-1.jpg"></div>
-                    <div class="blog__item__text">
-                        <span><img src="~/User_assets/img/icon/calendar.png" alt=""> 16 February 2020</span>
-                        <h5>What Curling Irons Are The Best Ones</h5>
-                        <a href="#">Read More</a>
+            <div class="hero__slider owl-carousel">
+                @foreach (var testimonial in testimonials)
+                {
+                    <div class="col-lg-4 col-md-6 col-sm-6 ">
+                        <div class="blog__item">
+                            <div class="blog__item__pic set-bg" data-setbg="../User_assets/img/blog/blog-1.jpg"></div>
+                            <div class="blog__item__text">
+                                <h5>@testimonial.Message</h5>
+                                <h6>@testimonial.User.Email</h6>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
+               
+                
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic set-bg" data-setbg="../User_assets/img/blog/blog-2.jpg"></div>
-                    <div class="blog__item__text">
-                        <span><img src="~/User_assets/img/icon/calendar.png" alt=""> 21 February 2020</span>
-                        <h5>Eternity Bands Do Last Forever</h5>
-                        <a href="#">Read More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic set-bg" data-setbg="../User_assets/img/blog/blog-3.jpg"></div>
-                    <div class="blog__item__text">
-                        <span><img src="~/User_assets/img/icon/calendar.png" alt=""> 28 February 2020</span>
-                        <h5>The Health Benefits Of Sunglasses</h5>
-                        <a href="#">Read More</a>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 </section>

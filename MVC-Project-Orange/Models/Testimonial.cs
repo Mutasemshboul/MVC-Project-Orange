@@ -16,7 +16,7 @@ namespace MVC_Project_Orange.Models
 
         public string Message { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.UtcNow;
 
         public string Status { get; set; }
 
