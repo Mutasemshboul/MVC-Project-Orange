@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MVC_Project_Orange.Data;
+using System.Security.Claims;
 
 namespace MVC_Project_Orange.Controllers
 {
@@ -25,6 +26,10 @@ namespace MVC_Project_Orange.Controllers
         public async Task<IActionResult> IndexAsync()
         {
             var applicationDbContext = _context.Products.Include(p => p.Category);
+            ViewBag.testimonials = _context.Testimonials
+                                   .Include(t => t.User)  // Eager load the ApplicationUser associated with each testimonial
+                                   .Where(t => t.Status == "Accept" && !t.IsDeleted)
+                                   .ToList();
             return View(await applicationDbContext.ToListAsync());
         }
         public async Task<IActionResult> ShopAsync()
@@ -53,6 +58,8 @@ namespace MVC_Project_Orange.Controllers
 
             int ProductCount =_context.Products.Count();
             ViewBag.ProductCount = ProductCount;
+
+            
 
             return View();
         }
@@ -90,24 +97,20 @@ namespace MVC_Project_Orange.Controllers
         {
             return View();
         }
-
-/*        public async Task<IActionResult> Details(int? id)
+        [Authorize(Roles = SD.Role_Customer)]
+        public IActionResult AddTestimonial(string message)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            Testimonial testimonial = new Testimonial();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            testimonial.UserID = userId;
+            testimonial.Message = message;
+            testimonial.Status = "pending";
+            _context.Add(testimonial);
+            _context.SaveChanges();
+            return View("Testimonial");
 
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.ProductID == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+        }
 
-            return View(product);
-        }*/
 
 
     }
