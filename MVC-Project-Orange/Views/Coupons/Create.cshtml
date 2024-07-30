@@ -1,0 +1,59 @@
+﻿@model MVC_Project_Orange.Models.Coupon
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Create Coupon</h1>
+
+<hr />
+
+<div class="d-flex justify-content-center">
+
+    <div class="col-lg-6 ">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Create Product</strong>
+            </div>
+            <div class="card-body">
+                <!-- Edit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Code" class="control-label"></label>
+                                <input asp-for="Code" class="form-control" />
+                                <span asp-validation-for="Code" class="text-danger"></span>
+                            </div>
+                            <div class="form-group has-success">
+                                <label asp-for="ExpiryDate" class="control-label"></label>
+                                <input asp-for="ExpiryDate" class="form-control" />
+                                <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label asp-for="Status" class="control-label"></label>
+                                <input asp-for="Status" class="form-control" />
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                            <div>
+                                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                    <i class="fa fa-lock fa-lg"></i>&nbsp;
+                                    <span id="payment-button-amount">Create</span>
+                                    <span id="payment-button-sending" style="display:none;">Sending…</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- .card -->
+
+    </div><!--/.col-->
+
+</div>
+    <a asp-action="Index">Back to List</a>
