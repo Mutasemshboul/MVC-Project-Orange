@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using MVC_Project_Orange.Data;
 using MVC_Project_Orange.Models;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace MVC_Project_Orange.Controllers
 {
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public static decimal Total { get; set; }
+        public static bool Flag { get; set; } = false;
 
         public CartController(ApplicationDbContext context)
         {
@@ -105,6 +106,7 @@ namespace MVC_Project_Orange.Controllers
             decimal subtotal = cart.Sum(item => item.Price * item.Quantity);
             decimal discount = subtotal * 0.20m;  
             decimal total = subtotal - discount;
+            Flag = true;
 
             TempData["Total"] = total.ToString();
 
@@ -113,6 +115,65 @@ namespace MVC_Project_Orange.Controllers
 
             TempData["SuccessMessage"] = $"Coupon applied! 20% discount has been applied.";
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> CheackOut()
+        {
+            var cart = GetCart();
+            decimal subtotal = cart.Sum(item => item.Price * item.Quantity);
+            if (Flag)
+            {
+                decimal discount = subtotal * 0.20m;
+                decimal total = subtotal - discount;
+                ViewBag.Total = total;
+            }
+            else
+            {
+                ViewBag.Total = subtotal;
+            }
+            
+            
+            return View(cart);
+        }
+
+        public IActionResult PlaceOrder()
+        {
+            var cart = GetCart();
+            if (!cart.Any())
+            {
+                TempData["Error"] = "Your cart is empty.";
+                return RedirectToAction("Index");
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                TempData["Error"] = "You must be logged in to checkout.";
+                return RedirectToAction("Login", "Account");  // Redirect to login if not logged in
+            }
+
+            foreach (var item in cart)
+            {
+                var transaction = new Transaction
+                {
+                    UserID = userId,
+                    ProductID = item.ProductId,
+                    Quantity = item.Quantity,
+                    TransactionDate = DateTime.Now
+                };
+                _context.Transactions.Add(transaction);
+            }
+
+             _context.SaveChanges();
+            ClearCart();
+            Flag = false;
+            TempData["Success"] = "Checkout successful!";
+            return RedirectToAction("Index");
+        }
+        private void ClearCart()
+        {
+            // Clear the cart by setting an empty list or null
+            HttpContext.Session.Remove("Cart");
         }
 
     }
