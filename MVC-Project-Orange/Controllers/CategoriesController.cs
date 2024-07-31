@@ -59,8 +59,7 @@ namespace MVC_Project_Orange.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CategoryID,Name,Description,ImgURL,IsDeleted,CreatedAt,UpdatedAt,ImageFile")] Category category)
         {
-            if (ModelState.IsValid)
-            {
+            
                 if (category.ImageFile != null)
                 {
                     string wwwRootPath = webHostEnvironment.WebRootPath;
@@ -80,7 +79,7 @@ namespace MVC_Project_Orange.Controllers
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            
             return View(category);
         }
 
