@@ -134,10 +134,8 @@ namespace MVC_Project_Orange.Controllers
                         {
                             await product.ImageFile.CopyToAsync(fileStream);
                         }
-
                         product.ImgURL = fileName;
                     }
-
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }

@@ -25,7 +25,7 @@ namespace MVC_Project_Orange.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Category);
+            var applicationDbContext = _context.Products.Include(p => p.Category).Where(p=>!p.IsDeleted);
             ViewBag.testimonials = _context.Testimonials
                                    .Include(t => t.User)  // Eager load the ApplicationUser associated with each testimonial
                                    .Where(t => t.Status == "Accept" && !t.IsDeleted)
@@ -34,7 +34,7 @@ namespace MVC_Project_Orange.Controllers
         }
         public async Task<IActionResult> ShopAsync()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Category);
+            var applicationDbContext = _context.Products.Include(p => p.Category).Where(p => !p.IsDeleted);
             return View(await applicationDbContext.ToListAsync());
         }
         [Authorize(Roles =SD.Role_Admin)]
