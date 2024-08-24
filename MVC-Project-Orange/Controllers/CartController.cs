@@ -61,7 +61,7 @@ namespace MVC_Project_Orange.Controllers
                 });
             }
             SaveCart(cart);
-            return RedirectToAction("Index");  // Or return to a view that shows the cart
+            return Json(new { success = true });  // Or return to a view that shows the cart
         }
         private List<CartItem> GetCart()
         {
@@ -95,11 +95,14 @@ namespace MVC_Project_Orange.Controllers
         [HttpPost]
         public async Task<IActionResult> ApplyCoupon(string couponCode)
         {
+            if (string.IsNullOrWhiteSpace(couponCode))
+            {
+                return Json(new { success = false, message = "Coupon code cannot be empty." });
+            }
             var coupon = await ValidateCoupon(couponCode);
             if (coupon == null)
             {
-                TempData["ErrorMessage"] = "Invalid or expired coupon.";
-                return RedirectToAction("Index");
+                return Json(new { success = false, message = "Invalid coupon code." });
             }
 
             var cart = GetCart();
@@ -113,8 +116,7 @@ namespace MVC_Project_Orange.Controllers
 
 
 
-            TempData["SuccessMessage"] = $"Coupon applied! 20% discount has been applied.";
-            return RedirectToAction("Index");
+            return Json(new { success = true, message = "Coupon applied successfully. 20% discount granted." });
         }
 
         public async Task<IActionResult> CheackOut()

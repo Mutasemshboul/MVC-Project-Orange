@@ -55,8 +55,9 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td class="prc" hidden> @item.Price.ToString("F2") </td> <!-- Ensure this is present if using 'prc' class -->
+                                    <td class="cart__price"></td>
 
-                                    <td class="cart__price">$@((item.Price * item.Quantity).ToString("F2"))</td>
                                     <td class="cart__close">
                                         <a href="@Url.Action("RemoveFromCart", "Cart", new { productId = item.ProductId })">
                                             <i class="fa fa-close"></i>
@@ -79,10 +80,12 @@
             <div class="col-lg-4">
                 <div class="cart__discount">
                     <h6>Discount codes</h6>
-                    <form action="@Url.Action("ApplyCoupon", "Cart")" method="post">
+                    <form id="couponForm">
                         <input type="text" name="couponCode" placeholder="Coupon code">
-                        <button type="submit">Apply</button>
+                        <button type="button" onclick="applyCoupon()">Apply</button>
                     </form>
+
+                    <p id="message" style="display:none;"></p>
                     @if (TempData["ErrorMessage"] != null)
                     {
                         <p style="color: red;">@TempData["ErrorMessage"]</p>
@@ -112,23 +115,61 @@
 
 <script>
     function Calc() {
-        console.log("Hi")
-        var sumAllProduct = 0
-        const quantites = document.getElementsByClassName('qty');
+        var sumAllProduct = 0;
+        const quantities = document.getElementsByClassName('qty');
         const prices = document.getElementsByClassName('prc');
         const eachPrice = document.getElementsByClassName('cart__price');
-        console.log(prices[0])
 
-        for (var i = 0; i < quantites.length; i++) {
-
-            sumAllProduct += Number(prices[i].innerHtml) * Number(quantites[i].value);
-            eachPrice[i].innerHtml = Number(prices[i].innerHtml) * Number(quantites[i].value) + " $";
-
+        if (quantities.length !== prices.length || prices.length !== eachPrice.length) {
+            console.error("Mismatched lengths in elements!");
+            return; // Stop execution if arrays do not match in length
         }
 
-        document.getElementById('totalofsum').innerHtml = sumAllProduct + " $";
-        document.getElementsByClassName('cart__price') = eachPrice;
+        for (var i = 0; i < quantities.length; i++) {
+            let price = parseFloat(prices[i].innerText); // Parse the innerText to float
+            let quantity = parseInt(quantities[i].value); // Parse the value to integer
 
+            if (!isNaN(price) && !isNaN(quantity)) { // Check if both values are numbers
+                let total = price * quantity;
+                sumAllProduct += total;
+                eachPrice[i].innerText = total.toFixed(2) + " $"; // Update each price
+            }
+        }
+
+        document.getElementById('totalofsum').innerText = sumAllProduct.toFixed(2) + " $";
+    }
+
+    function applyCoupon() {
+        var formData = $('#couponForm').serialize();  
+
+        $.ajax({
+            url: '@Url.Action("ApplyCoupon", "Cart")',  
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: response.message,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message,
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'There was a problem with the request.',
+                });
+            }
+        });
     }
 
 </script>
